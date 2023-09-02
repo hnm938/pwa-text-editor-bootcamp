@@ -1,14 +1,20 @@
 const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
-const port = process.env.PORT || 3000; // Choose a suitable port
+const PORT = process.env.PORT || 3000;
 
-// Middleware for parsing JSON request bodies
+// Middleware setup
+app.use(bodyParser.json());
+app.use(cors());
+
+app.use(express.static("../client/dist"));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Define your API routes here
-app.use("/api/notes", require("./routes/notes")); // Create this route file
+require("./routes/htmlRoutes")(app);
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

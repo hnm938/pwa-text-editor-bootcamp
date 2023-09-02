@@ -1,21 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note Taking App</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="UTF-8">
+  <title>Text Editor</title>
 </head>
 <body>
-    <h1>Notes</h1>
-    <div class="note-form">
-        <input type="text" id="note-title" placeholder="Title">
-        <textarea id="note-content" placeholder="Enter your note"></textarea>
-        <button id="add-note">Add Note</button>
-    </div>
-    <div class="note-list" id="note-list">
-        <!-- Notes will be displayed here -->
-    </div>
-    <script src="app.js"></script>
+  <div class="editor-container">
+    <textarea id="editor" rows="10" cols="40"></textarea>
+  </div>
+  <script src="bundle.js"></script> <!-- Include your main application bundle -->
+  <script src="editor.bundle.js"></script> <!-- Include the text editor bundle -->
 </body>
 </html>
