@@ -1,0 +1,1 @@
+document.getElementById("editor").addEventListener("input",(function(e){e.target.value}));
