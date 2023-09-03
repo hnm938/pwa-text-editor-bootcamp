@@ -1,7 +1,17 @@
+import { saveInputToIndexedDB } from "./db";
+
 const editor = document.getElementById("editor");
 
-// Event listener for input changes
 editor.addEventListener("input", (event) => {
   const content = event.target.value;
-  // You can save 'content' to IndexedDB or perform other actions here
+
+  // Save the content to IndexedDB when the user inputs data
+  saveInputToIndexedDB(content)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 });
+
