@@ -1,3 +1,5 @@
+import "../css/style.css";
+
 if ("serviceWorker" in navigator) {
   // Register the service worker
   navigator.serviceWorker
