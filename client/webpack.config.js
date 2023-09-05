@@ -1,7 +1,8 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
-const path = require("path");
 const { InjectManifest } = require("workbox-webpack-plugin");
+const path = require("path");
 
 module.exports = {
   entry: {
@@ -11,7 +12,7 @@ module.exports = {
     database: "./src/js/db.js",
   },
   output: {
-    filename: "[name].bundle.js", // Use [name] to generate separate bundles for each entry point
+    filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
   },
   module: {
@@ -26,7 +27,10 @@ module.exports = {
           },
         },
       },
-      // Add rules for processing CSS, images, and other assets as needed
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
     ],
   },
   plugins: [
@@ -42,9 +46,9 @@ module.exports = {
     new WebpackPwaManifest({
       fingerprints: false,
       inject: true,
-      name: "Just Another Text Editor",
-      short_name: "JATE",
-      description: "Just another text editor",
+      name: "PWA Notepad",
+      short_name: "Notepad",
+      description: "Simple PWA Notepad",
       background_color: "#225ca3",
       theme_color: "#225ca3",
       start_url: "/",
@@ -54,6 +58,18 @@ module.exports = {
           src: path.resolve("src/images/logo.png"),
           sizes: [96, 128, 192, 256, 384, 512],
           destination: path.join("assets", "icons"),
+        },
+      ],
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "./favicon.ico"),
+          to: path.resolve(__dirname, "dist"),
+        },
+        {
+          from: "src/images",
+          to: "images",
         },
       ],
     }),

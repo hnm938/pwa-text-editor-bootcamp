@@ -1,18 +1,27 @@
 // Open or create an IndexedDB database
-const dbPromise = indexedDB.open("MyDatabase", 1);
+const dbPromise = new Promise((resolve, reject) => {
+  const request = indexedDB.open("NotepadDatabase", 1);
 
-// Define the database schema (object stores)
-dbPromise.onupgradeneeded = (event) => {
-  const db = event.target.result;
+  request.onerror = (event) => {
+    reject(event.target.error);
+  };
 
-  // Create an object store for notes
-  if (!db.objectStoreNames.contains("notes")) {
-    db.createObjectStore("notes", { keyPath: "id" });
-  }
-};
+  request.onupgradeneeded = (event) => {
+    const db = event.target.result;
+
+    // Create an object store for notes
+    if (!db.objectStoreNames.contains("notes")) {
+      db.createObjectStore("notes", { keyPath: "id" });
+    }
+  };
+
+  request.onsuccess = (event) => {
+    resolve(event.target.result);
+  };
+});
 
 // Function to save a note to IndexedDB
-function saveNoteToIndexedDB(note) {
+const saveNoteToIndexedDB = (note) => {
   return dbPromise.then((db) => {
     const transaction = db.transaction("notes", "readwrite");
     const store = transaction.objectStore("notes");
@@ -20,17 +29,43 @@ function saveNoteToIndexedDB(note) {
   });
 }
 
-// Function to retrieve all notes from IndexedDB
 function getNotesFromIndexedDB() {
-  return dbPromise.then((db) => {
-    const transaction = db.transaction("notes", "readonly");
-    const store = transaction.objectStore("notes");
-    return store.getAll();
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("NotepadDatabase", 1);
+
+    request.onerror = (event) => {
+      reject(event.target.error);
+    };
+
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const transaction = db.transaction("notes", "readonly");
+      const store = transaction.objectStore("notes");
+
+      const notes = [];
+
+      transaction.oncomplete = () => {
+        resolve(notes);
+      };
+
+      const cursor = store.openCursor();
+
+      cursor.onerror = (event) => {
+        reject(event.target.error);
+      };
+
+      cursor.onsuccess = (event) => {
+        const cursor = event.target.result;
+        if (cursor) {
+          notes.push(cursor.value);
+          cursor.continue();
+        }
+      };
+    };
   });
 }
-
 // Function to delete a note from IndexedDB
-function deleteNoteFromIndexedDB(noteId) {
+const deleteNoteFromIndexedDB = (noteId) => {
   return dbPromise.then((db) => {
     const transaction = db.transaction("notes", "readwrite");
     const store = transaction.objectStore("notes");
@@ -38,5 +73,4 @@ function deleteNoteFromIndexedDB(noteId) {
   });
 }
 
-// Export the IndexedDB functions
 export { saveNoteToIndexedDB, getNotesFromIndexedDB, deleteNoteFromIndexedDB };
