@@ -26,13 +26,24 @@ module.exports = {
           },
         },
       },
-      // Add rules for processing CSS, images, and other assets as needed
+      {
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "images/",
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./index.html", // Path to your HTML template file
-      filename: "index.html", // Name for the output HTML file
+      template: "./index.html",
+      filename: "index.html",
     }),
     // inject service worker
     new InjectManifest({
