@@ -2,7 +2,7 @@ const DB_NAME = "NotepadDatabase"; // Use your database name
 const DB_VERSION = 1; // Use your database version
 
 // Function to open or create an IndexedDB database
-function openDatabase() {
+const openDatabase = () => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
@@ -27,7 +27,7 @@ function openDatabase() {
 }
 
 // Function to save input content to IndexedDB
-function saveInputToIndexedDB(content) {
+const saveInputToIndexedDB = (content) => {
   return openDatabase().then((db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction("notes", "readwrite");
