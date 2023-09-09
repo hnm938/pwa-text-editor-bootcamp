@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
 const { InjectManifest } = require("workbox-webpack-plugin");
 
@@ -65,6 +66,11 @@ module.exports = {
           sizes: [96, 128, 192, 256, 384, 512],
           destination: path.join("assets", "icons"),
         },
+      ],
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: "public", to: "public" }, // Copy files from "public" to "public" in the build output
       ],
     }),
   ],
