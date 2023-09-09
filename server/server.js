@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
@@ -12,7 +13,7 @@ app.use(express.static("../client/dist"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, "dist", "public")));
+app.use('/images', express.static(path.join(__dirname, 'client', 'src', 'images')));
 
 require("./routes/htmlRoutes")(app);
 
