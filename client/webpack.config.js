@@ -45,7 +45,6 @@ module.exports = {
       template: "./index.html",
       filename: "index.html",
     }),
-    // inject service worker
     new InjectManifest({
       swSrc: "./service-worker.js",
       swDest: "service-worker.js",
