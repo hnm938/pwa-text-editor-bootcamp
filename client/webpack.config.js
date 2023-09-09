@@ -27,18 +27,6 @@ module.exports = {
           },
         },
       },
-      {
-        test: /\.(png|jpg|jpeg|gif|svg)$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]",
-              outputPath: "images/",
-            },
-          },
-        ],
-      },
     ],
   },
   plugins: [
@@ -70,7 +58,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: "public", to: "public" }, // Copy files from "public" to "public" in the build output
+        { from: "client/src/images", to: "images" },
       ],
     }),
   ],
