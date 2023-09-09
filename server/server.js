@@ -12,6 +12,8 @@ app.use(express.static("../client/dist"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(express.static(path.join(__dirname, "dist", "public")));
+
 require("./routes/htmlRoutes")(app);
 
 // Start the server
